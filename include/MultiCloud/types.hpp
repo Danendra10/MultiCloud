@@ -1,6 +1,7 @@
 #ifndef MULTICLOUD_TYPES_HPP_
 #define MULTICLOUD_TYPES_HPP_
 
+#include <cstddef>
 #pragma once
 
 #include <memory>
@@ -11,6 +12,27 @@ struct PointXYZ {
 
   PointXYZ() : x(0), y(0), z(0) {}
   PointXYZ(float x, float y, float z) : x(x), y(y), z(z) {}
+};
+
+struct PointNormal {
+  float nx, ny, nz;
+
+  PointNormal() : nx(0), ny(0), nz(0) {}
+  PointNormal(float nx, float ny, float nz) : nx(nx), ny(ny), nz(nz) {}
+};
+
+struct TextureCoord {
+  float u, v;
+
+  TextureCoord(): u(0), v(0) {}
+  TextureCoord(float u, float v): u(u), v(v) {}
+};
+
+struct MeshFace {
+  int vert_1, vert_2, vert_3;
+
+  MeshFace() : vert_1(0), vert_2(0), vert_3(0){}
+  MeshFace(int vert_in_1, int vert_in_2, int vert_in_3): vert_1(vert_in_1), vert_2(vert_in_2), vert_3(vert_in_3) {}
 };
 
 template<typename PointType>
@@ -25,6 +47,26 @@ class CloudSet {
 
   protected:
     std::vector<PointType> points;
+};
+
+template<typename VertType>
+class MultiMesh {
+  public:
+    using Ptr = std::shared_ptr<MultiMesh<VertType>>;
+    
+    MultiMesh() = default;
+    
+    // Accessors
+    size_t VertexCnt() const;
+    size_t FaceCnt() const;
+    size_t NormalCnt() const;
+    size_t TextCoordCnt() const;
+  protected:
+    std::vector<VertType> vertices;
+    std::vector<MeshFace> faces;
+    std::vector<PointNormal> normals;
+    std::vector<TextureCoord> texture_coords;
+  private:
 };
 
 #endif
