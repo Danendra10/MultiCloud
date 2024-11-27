@@ -10,6 +10,22 @@ include_directories( include )
 
 add_library(MultiCloud STATIC src/types.cpp src/io.cpp)
 target_include_directories(MultiCloud PUBLIC include)
-# add_library(io src/io.cpp)
-# target_link_libraries(io X11 GL m)
-# target_compile_definitions(io PRIVATE GL_GLEXT_PROTOTYPES)
+
+add_library(MultiCloudVisualizer STATIC src/point_visualizer.cpp)
+target_include_directories(MultiCloudVisualizer PUBLIC include)
+target_link_libraries(MultiCloudVisualizer X11 GL m)
+target_compile_definitions(MultiCloudVisualizer PRIVATE GL_GLEXT_PROTOTYPES)
+
+
+###     GTEST     ###
+enable_testing()
+find_package(GTest REQUIRED)
+include_directories(${GTEST_INCLUDE_DIRS})
+
+add_executable(types_test test/point_types_test.cpp)
+target_link_libraries(types_test MultiCloud ${GTEST_LIBRARIES} pthread)
+
+add_test(
+  NAME types_test
+  COMMAND types_test
+)

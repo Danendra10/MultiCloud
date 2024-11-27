@@ -2,6 +2,7 @@
 #define MULTICLOUD_TYPES_HPP_
 
 #include <cstddef>
+#include <ostream>
 #pragma once
 
 #include <memory>
@@ -12,6 +13,10 @@ struct PointXYZ {
 
   PointXYZ() : x(0), y(0), z(0) {}
   PointXYZ(float x, float y, float z) : x(x), y(y), z(z) {}
+
+  friend std::ostream &operator<<(std::ostream &os, const PointXYZ &other);
+
+  bool operator==(const PointXYZ& other) const;
 };
 
 struct PointNormal {
