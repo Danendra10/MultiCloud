@@ -1,14 +1,20 @@
 #ifndef MULTICLOUD_VISUALIZER_HPP_
 #define MULTICLOUD_VISUALIZER_HPP_
 
+#include <string>
 #pragma once
 #include <cstdint>
-
 #include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <X11/extensions/Xrandr.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
 #include <GL/glx.h>
 #include <GL/glext.h>
 #include <MultiCloud/point_visualizer.hpp>
 #include "MultiCloud/types.hpp"
+#include <chrono>
+#include <thread>
 
 typedef GLXContext (*glXCreateContextAttribsARBProc)
   (Display*, GLXFBConfig, GLXContext, Bool, const int*);
@@ -34,12 +40,11 @@ const char *fragment_shader_src = "#version 330 core\n"
  
 class Visualizer {
   public:
-    Visualizer();
+    Visualizer(const std::string& window_name_ = "Multi Cloud Visualizer");
     ~Visualizer();
 
     void Spin(const uint16_t freq);
     bool IsStopped();
-    
     /**
      * @brief size in meter scale
      */
@@ -52,9 +57,17 @@ class Visualizer {
      */
     void CreateCoordSystem(const uint16_t size_x, const uint16_t size_y, const uint16_t size_z);
   protected:
-
+    void InitWindow(const std::string& window_name_ = "Multi Cloud Visualizer");
+    void HandleResize(const uint16_t height, const uint16_t width);
   private:
-    void InitWindow();
+    Display* display;
+    Window window;
+    GLXContext gl_context;
+
+    bool stopped;
+    std::string window_name;
+    uint16_t window_height;
+    uint16_t window_width;
 };
 
 template<typename CloudType>
