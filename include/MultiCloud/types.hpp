@@ -1,21 +1,25 @@
 #ifndef MULTICLOUD_TYPES_HPP_
 #define MULTICLOUD_TYPES_HPP_
 
-#include <cstddef>
-#include <ostream>
 #pragma once
 
+#include <cstddef>
+#include <ostream>
 #include <memory>
 #include <vector>
+#include <math.h>
 
 struct PointXYZ {
   float x, y, z;
 
   PointXYZ() : x(0), y(0), z(0) {}
   PointXYZ(float x, float y, float z) : x(x), y(y), z(z) {}
-
+  
+  // Utilities Functions 
+  float EuclideanDist(const PointXYZ& other);
+  PointXYZ DistToPoint(const PointXYZ& other);
+  // Operators
   friend std::ostream &operator<<(std::ostream &os, const PointXYZ &other);
-
   bool operator==(const PointXYZ& other) const;
 };
 
