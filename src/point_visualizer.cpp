@@ -1,14 +1,4 @@
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glx.h>
 #include <MultiCloud/point_visualizer.hpp>
-#include <X11/X.h>
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <chrono>
-#include <cstdint>
-#include <cstdlib>
-#include <iostream>
 
 Visualizer::Visualizer(const std::string& window_name_) : 
   display(nullptr), window(0),
@@ -88,7 +78,7 @@ void Visualizer::HandleResize(const uint16_t height, const uint16_t width) {
 
 void Visualizer::Spin(const uint16_t freq) {
   const std::chrono::milliseconds frame_time(1000/freq);
-
+  std::cout << "Is it stopped? " << this->IsStopped() << std::endl;
   while(!this->IsStopped()) {
     XEvent event;
     while(XPending(this->display)) {
